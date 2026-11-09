@@ -220,7 +220,13 @@ def evaluate_bank(manual=None) -> pd.DataFrame:
                                   task.get("допуск", RELATIVE_TOLERANCE)) if t == "F" else None,
             })
     df = pd.DataFrame(rows)
-    return attach_manual(df, manual)
+    df = attach_manual(df, manual)
+    # единый числовой тип до сохранения: bool -> 1.0/0.0, None -> NaN
+    for col in ("correct", "auto_f"):
+        df[col] = pd.to_numeric(df[col], errors="coerce")
+    # дедупликация повторов прогонов — в одном месте, как в analysis.py
+    df = df.drop_duplicates(subset=["model", "task_id"], keep="first")
+    return df
 
 def evaluate_type_e() -> pd.DataFrame:
     rows = []
@@ -322,15 +328,45 @@ if __name__ == "__main__":
         print(f"\nСверка F: ручная оценка совпадает с check_f на {agree:.3f} ({len(fdf)} строк)")
 
     # Базовые модели LR / NB на тех же примерах (сравнение для типа E)
-    from type_e_data import load_ai4i, make_split, classical_baselines
+    from type_e_data import load_ai4i, make_split, FEATURE_COLS, LABEL
+    from sklearn.linear_model import LogisticRegression
+    from sklearn.naive_bayes import GaussianNB
+    from sklearn.pipeline import make_pipeline
+    from sklearn.preprocessing import StandardScaler
+    from sklearn.metrics import f1_score
+    
     df = load_ai4i()
     split = make_split(df)
+    
+    preds_rows = []
     for n in (5, 20):
-        print(f"\nБазовые модели, {n} примеров:", classical_baselines(df, split, n))
-
-    # Точность по моделям по всем оценённым типам (A-B авто, C/D/F вручную) с ДИ
-    print()
-    scored = bank_df[bank_df["correct"].notna()]
-    for m, g in scored.groupby("model"):
-        acc, lo, hi = bootstrap_ci(g["correct"].astype(bool))
-        print(f"{m}: accuracy (A–F) {acc:.3f} [{lo:.3f}; {hi:.3f}]")
+        few = split[f"few{n}"]
+        X_tr = df.loc[few, FEATURE_COLS].to_numpy(float)
+        y_tr = df.loc[few, LABEL].to_numpy(int)
+        X_te = df.loc[split["test_idx"], FEATURE_COLS].to_numpy(float)
+        y_te = df.loc[split["test_idx"], LABEL].to_numpy(int)
+        
+        models = {
+            "logreg": make_pipeline(StandardScaler(), LogisticRegression(max_iter=1000, random_state=42)),
+            "naive_bayes": GaussianNB(),
+        }
+        for name, model in models.items():
+            model.fit(X_tr, y_tr)
+            pred = model.predict(X_te)
+            
+            # Вывод в консоль
+            acc = float((pred == y_te).mean())
+            f1 = float(f1_score(y_te, pred, pos_label=1, zero_division=0))
+            print(f"\nБазовая модель {name}, {n} примеров: acc={acc:.3f}, f1_rare={f1:.3f}")
+            
+            # Сохранение предсказаний для analysis.py (H12)
+            for idx, p, yt in zip(split["test_idx"], pred, y_te):
+                preds_rows.append({
+                    "classifier": name, "n_shots": n, "row_idx": int(idx),
+                    "y_pred": int(p), "y_true": int(yt)
+                })
+                
+    if preds_rows:
+        preds_path = os.path.join(RESULTS_DIR, "classical_preds.csv")
+        pd.DataFrame(preds_rows).to_csv(preds_path, index=False)
+        print(f"Сохранены построчные предсказания базлайнов: {preds_path}")

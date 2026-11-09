@@ -29,6 +29,21 @@ CLASSICAL_PREDS = os.path.join(RESULTS_DIR, "classical_preds.csv")  # classifier
 def load_bank_df() -> pd.DataFrame:
     df = pd.read_csv(os.path.join(RESULTS_DIR, "eval_bank.csv"))
     dup = df[df.duplicated(["model", "task_id"], keep=False)]
+    def _num(v):
+        if pd.isna(v):
+            return np.nan
+        s = str(v).strip().lower()
+        if s in ("true", "1", "1.0"):
+            return 1.0
+        if s in ("false", "0", "0.0"):
+            return 0.0
+        try:
+            return float(s)
+        except ValueError:
+            return np.nan
+    for col in ("correct", "auto_f"):
+        if col in df.columns:
+            df[col] = df[col].map(_num)
     if len(dup):
         print(f"ПРЕДУПРЕЖДЕНИЕ: дубли (model, task_id): {len(dup)} строк; "
               f"оставлен первый прогон (согласовано с prepare_blind_review): "
@@ -181,7 +196,8 @@ def cost_table(bank: pd.DataFrame, e_df: pd.DataFrame) -> pd.DataFrame:
     ncor = bank[bank["correct"].notna()].groupby("model")["correct"].sum()
     df = pd.DataFrame({"total_tokens": tok, "mean_latency_s": lat.round(1),
                        "n_correct": ncor})
-    df["cost_rub"] = [round(tok[m] / 1000 * TARIFFS[m], 2) if TARIFFS.get(m) else np.nan
+    df["cost_rub"] = [round(tok[m] / 1000 * TARIFFS[m], 2)
+                      if TARIFFS.get(m) is not None else np.nan
                       for m in df.index]
     # Защита от деления на ноль и object dtype
     df["rub_per_correct"] = pd.to_numeric(df["cost_rub"] / df["n_correct"], errors="coerce").round(2)
@@ -279,6 +295,55 @@ def error_candidates(bank: pd.DataFrame) -> pd.DataFrame:
     df["answer"] = [first.get((m, t), "")[:600] for m, t in zip(df["model"], df["task_id"])]
     return df[["model", "task_id", "type", "parsed", "answer"]].sort_values(["type", "model"])
 
+def compute_ece_and_plot_reliability(bank: pd.DataFrame, e_df: pd.DataFrame,
+                                     n_bins: int = 5) -> pd.DataFrame:
+    b = bank[bank["correct"].notna() & bank["confidence"].notna()].copy()
+    b["is_correct"] = b["correct"].astype(bool)
+    e = e_df[e_df["y_pred"].notna() & e_df["confidence"].notna()].copy()
+    e["is_correct"] = e["y_pred"] == e["y_true"]
+    df = pd.concat([b[["model", "confidence", "is_correct"]],
+                    e[["model", "confidence", "is_correct"]]], ignore_index=True)
+    df["confidence"] = pd.to_numeric(df["confidence"], errors="coerce") / 100.0
+    df = df.dropna(subset=["confidence"])
+
+    n_zero = int((df["confidence"] <= 0).sum())
+    if n_zero:
+        print(f"ПРЕДУПРЕЖДЕНИЕ: из ECE исключено ответов с уверенностью 0: {n_zero} "
+              f"(сбой формата, а не осмысленная уверенность)")
+        df = df[df["confidence"] > 0]
+    if not len(df):
+        return pd.DataFrame()
+
+    rows = []
+    edges = np.linspace(0, 1, n_bins + 1)
+    edges[-1] += 1e-9
+    for model, g in df.groupby("model"):
+        g = g.copy()
+        g["bin"] = pd.cut(g["confidence"], bins=edges, include_lowest=True)
+        ece, stats = 0.0, []
+        for _, group in g.groupby("bin", observed=False):
+            if not len(group):
+                continue
+            conf = group["confidence"].mean()
+            acc = group["is_correct"].mean()
+            ece += (len(group) / len(g)) * abs(conf - acc)
+            stats.append((conf, acc, len(group)))
+        rows.append({"model": model, "ECE": round(ece, 3), "n": len(g)})
+
+        fig, ax = plt.subplots(figsize=(6, 6))
+        ax.plot([0, 1], [0, 1], "k--", label="Идеальная калибровка")
+        ax.plot([s[0] for s in stats], [s[1] for s in stats], "o-", label=model)
+        for conf, acc, c in stats:
+            ax.annotate(f"n={c}", (conf, acc), textcoords="offset points",
+                        xytext=(0, 10), ha="center", fontsize=8)
+        ax.set_xlabel("Средняя заявленная уверенность (0–1)")
+        ax.set_ylabel("Доля верных ответов")
+        ax.set_title(f"Диаграмма надёжности: {model} (ECE={ece:.3f})")
+        ax.legend(); ax.set_xlim(0, 1); ax.set_ylim(0, 1)
+        fig.tight_layout()
+        fig.savefig(os.path.join(FIG, f"reliability_{model}.png"), dpi=150)
+        plt.close(fig)
+    return pd.DataFrame(rows)
 
 def main() -> None:
     os.makedirs(OUT, exist_ok=True)
@@ -292,14 +357,21 @@ def main() -> None:
     h5 = h5_gap(ci, bank)
     h12 = h12_table(e_df);          h12.to_csv(os.path.join(OUT, "h12_fewshot.csv"), index=False)
     cost = cost_table(bank, e_df);  cost.to_csv(os.path.join(OUT, "cost_speed.csv"))
-    err = error_candidates(bank);   err.to_csv(os.path.join(OUT, "error_candidates.csv"), index=False)
+    err = error_candidates(bank);   err.to_csv(os.path.join(OUT, "error_candidates.csv"), index=False,encoding='utf-8-sig')
     make_figures(ci, bank, e_df, h3, h12, cost)
+    
+    ece = compute_ece_and_plot_reliability(bank, e_df)
+    ece.to_csv(os.path.join(OUT, "ece_reliability.csv"), index=False)
+    
+    make_figures(ci, bank, e_df, h3, h12, cost)
+    print("\n=== Калибровка уверенности (ECE) ===")
+    print(ece.to_string(index=False))
 
     print("=== Точность с 95% ДИ ===");            print(ci.to_string(index=False))
     print("\n=== МакНемар (все оценённые типы) ==="); print(mn.to_string(index=False))
     print("\n=== Отказы ===");                     print(ref.to_string(index=False))
-    print("\n=== H3 ===");                         print(h3.to_string(index=False))
-    print("\n=== H5 ===");                         print(h5["gap_A"], h5["gap_B"])
+    print("\n=== H3 ===");  print(h3.to_string(index=False))
+    print("\n=== H5 ===");  print("МакНемар на типе A (local vs остальные):", h5["mcnemar_A_local_vs_others"]); print(h5["gap_A"], h5["gap_B"])
     print("\n=== H12 ===");                        print(h12.to_string(index=False))
     print("\n=== Стоимость/скорость ===");        print(cost.to_string())
     print(f"\nКандидаты ошибок: {os.path.join(OUT, 'error_candidates.csv')} "
