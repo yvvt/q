@@ -1,0 +1,17 @@
+model,type,n,acc,ci_lo,ci_hi
+foreign,C,5,1.0,1.0,1.0
+foreign,D,5,0.2,0.0,0.6
+foreign,F,10,0.5,0.2,0.8
+gigachat,C,5,0.8,0.4,1.0
+gigachat,D,5,0.4,0.0,0.8
+gigachat,F,10,0.4,0.1,0.7
+local_qwen,C,5,0.2,0.0,0.6
+local_qwen,D,5,0.0,0.0,0.0
+local_qwen,F,10,0.4,0.1,0.7
+yandexgpt,C,5,0.2,0.0,0.6
+yandexgpt,D,5,0.2,0.0,0.6
+yandexgpt,F,10,0.7,0.4,0.902
+foreign,ALL,20,0.55,0.35,0.75
+gigachat,ALL,20,0.5,0.3,0.75
+local_qwen,ALL,20,0.25,0.1,0.45
+yandexgpt,ALL,20,0.45,0.25,0.65

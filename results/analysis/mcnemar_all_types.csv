@@ -1,0 +1,7 @@
+model_a,model_b,n,discordant,p_value
+foreign,gigachat,40,5,1.0
+foreign,local_qwen,40,6,0.0312
+foreign,yandexgpt,40,6,0.6875
+gigachat,local_qwen,40,7,0.125
+gigachat,yandexgpt,40,9,1.0
+local_qwen,yandexgpt,40,6,0.2188

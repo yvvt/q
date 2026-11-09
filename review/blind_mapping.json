@@ -1,0 +1,402 @@
+{
+ "R0000": {
+  "model_key": "yandexgpt",
+  "task_id": 34,
+  "type": "F"
+ },
+ "R0001": {
+  "model_key": "local_qwen",
+  "task_id": 37,
+  "type": "F"
+ },
+ "R0002": {
+  "model_key": "local_qwen",
+  "task_id": 26,
+  "type": "D"
+ },
+ "R0003": {
+  "model_key": "foreign",
+  "task_id": 34,
+  "type": "F"
+ },
+ "R0004": {
+  "model_key": "foreign",
+  "task_id": 28,
+  "type": "D"
+ },
+ "R0005": {
+  "model_key": "local_qwen",
+  "task_id": 35,
+  "type": "F"
+ },
+ "R0006": {
+  "model_key": "gigachat",
+  "task_id": 23,
+  "type": "C"
+ },
+ "R0007": {
+  "model_key": "foreign",
+  "task_id": 33,
+  "type": "F"
+ },
+ "R0008": {
+  "model_key": "yandexgpt",
+  "task_id": 36,
+  "type": "F"
+ },
+ "R0009": {
+  "model_key": "local_qwen",
+  "task_id": 30,
+  "type": "D"
+ },
+ "R0010": {
+  "model_key": "local_qwen",
+  "task_id": 24,
+  "type": "C"
+ },
+ "R0011": {
+  "model_key": "gigachat",
+  "task_id": 40,
+  "type": "F"
+ },
+ "R0012": {
+  "model_key": "local_qwen",
+  "task_id": 36,
+  "type": "F"
+ },
+ "R0013": {
+  "model_key": "foreign",
+  "task_id": 30,
+  "type": "D"
+ },
+ "R0014": {
+  "model_key": "foreign",
+  "task_id": 32,
+  "type": "F"
+ },
+ "R0015": {
+  "model_key": "foreign",
+  "task_id": 37,
+  "type": "F"
+ },
+ "R0016": {
+  "model_key": "yandexgpt",
+  "task_id": 27,
+  "type": "D"
+ },
+ "R0017": {
+  "model_key": "gigachat",
+  "task_id": 36,
+  "type": "F"
+ },
+ "R0018": {
+  "model_key": "gigachat",
+  "task_id": 41,
+  "type": "F"
+ },
+ "R0019": {
+  "model_key": "yandexgpt",
+  "task_id": 21,
+  "type": "C"
+ },
+ "R0020": {
+  "model_key": "foreign",
+  "task_id": 39,
+  "type": "F"
+ },
+ "R0021": {
+  "model_key": "yandexgpt",
+  "task_id": 35,
+  "type": "F"
+ },
+ "R0022": {
+  "model_key": "foreign",
+  "task_id": 25,
+  "type": "C"
+ },
+ "R0023": {
+  "model_key": "local_qwen",
+  "task_id": 38,
+  "type": "F"
+ },
+ "R0024": {
+  "model_key": "local_qwen",
+  "task_id": 25,
+  "type": "C"
+ },
+ "R0025": {
+  "model_key": "gigachat",
+  "task_id": 26,
+  "type": "D"
+ },
+ "R0026": {
+  "model_key": "local_qwen",
+  "task_id": 32,
+  "type": "F"
+ },
+ "R0027": {
+  "model_key": "local_qwen",
+  "task_id": 33,
+  "type": "F"
+ },
+ "R0028": {
+  "model_key": "yandexgpt",
+  "task_id": 29,
+  "type": "D"
+ },
+ "R0029": {
+  "model_key": "yandexgpt",
+  "task_id": 37,
+  "type": "F"
+ },
+ "R0030": {
+  "model_key": "gigachat",
+  "task_id": 29,
+  "type": "D"
+ },
+ "R0031": {
+  "model_key": "local_qwen",
+  "task_id": 22,
+  "type": "C"
+ },
+ "R0032": {
+  "model_key": "yandexgpt",
+  "task_id": 38,
+  "type": "F"
+ },
+ "R0033": {
+  "model_key": "foreign",
+  "task_id": 21,
+  "type": "C"
+ },
+ "R0034": {
+  "model_key": "gigachat",
+  "task_id": 25,
+  "type": "C"
+ },
+ "R0035": {
+  "model_key": "gigachat",
+  "task_id": 30,
+  "type": "D"
+ },
+ "R0036": {
+  "model_key": "foreign",
+  "task_id": 26,
+  "type": "D"
+ },
+ "R0037": {
+  "model_key": "gigachat",
+  "task_id": 32,
+  "type": "F"
+ },
+ "R0038": {
+  "model_key": "gigachat",
+  "task_id": 27,
+  "type": "D"
+ },
+ "R0039": {
+  "model_key": "yandexgpt",
+  "task_id": 22,
+  "type": "C"
+ },
+ "R0040": {
+  "model_key": "foreign",
+  "task_id": 22,
+  "type": "C"
+ },
+ "R0041": {
+  "model_key": "gigachat",
+  "task_id": 37,
+  "type": "F"
+ },
+ "R0042": {
+  "model_key": "yandexgpt",
+  "task_id": 40,
+  "type": "F"
+ },
+ "R0043": {
+  "model_key": "yandexgpt",
+  "task_id": 23,
+  "type": "C"
+ },
+ "R0044": {
+  "model_key": "gigachat",
+  "task_id": 35,
+  "type": "F"
+ },
+ "R0045": {
+  "model_key": "yandexgpt",
+  "task_id": 26,
+  "type": "D"
+ },
+ "R0046": {
+  "model_key": "foreign",
+  "task_id": 38,
+  "type": "F"
+ },
+ "R0047": {
+  "model_key": "foreign",
+  "task_id": 36,
+  "type": "F"
+ },
+ "R0048": {
+  "model_key": "foreign",
+  "task_id": 23,
+  "type": "C"
+ },
+ "R0049": {
+  "model_key": "gigachat",
+  "task_id": 34,
+  "type": "F"
+ },
+ "R0050": {
+  "model_key": "gigachat",
+  "task_id": 21,
+  "type": "C"
+ },
+ "R0051": {
+  "model_key": "local_qwen",
+  "task_id": 34,
+  "type": "F"
+ },
+ "R0052": {
+  "model_key": "foreign",
+  "task_id": 40,
+  "type": "F"
+ },
+ "R0053": {
+  "model_key": "yandexgpt",
+  "task_id": 30,
+  "type": "D"
+ },
+ "R0054": {
+  "model_key": "local_qwen",
+  "task_id": 40,
+  "type": "F"
+ },
+ "R0055": {
+  "model_key": "local_qwen",
+  "task_id": 41,
+  "type": "F"
+ },
+ "R0056": {
+  "model_key": "foreign",
+  "task_id": 27,
+  "type": "D"
+ },
+ "R0057": {
+  "model_key": "foreign",
+  "task_id": 29,
+  "type": "D"
+ },
+ "R0058": {
+  "model_key": "gigachat",
+  "task_id": 33,
+  "type": "F"
+ },
+ "R0059": {
+  "model_key": "yandexgpt",
+  "task_id": 32,
+  "type": "F"
+ },
+ "R0060": {
+  "model_key": "yandexgpt",
+  "task_id": 33,
+  "type": "F"
+ },
+ "R0061": {
+  "model_key": "gigachat",
+  "task_id": 24,
+  "type": "C"
+ },
+ "R0062": {
+  "model_key": "yandexgpt",
+  "task_id": 41,
+  "type": "F"
+ },
+ "R0063": {
+  "model_key": "gigachat",
+  "task_id": 39,
+  "type": "F"
+ },
+ "R0064": {
+  "model_key": "gigachat",
+  "task_id": 38,
+  "type": "F"
+ },
+ "R0065": {
+  "model_key": "yandexgpt",
+  "task_id": 28,
+  "type": "D"
+ },
+ "R0066": {
+  "model_key": "local_qwen",
+  "task_id": 27,
+  "type": "D"
+ },
+ "R0067": {
+  "model_key": "local_qwen",
+  "task_id": 39,
+  "type": "F"
+ },
+ "R0068": {
+  "model_key": "foreign",
+  "task_id": 41,
+  "type": "F"
+ },
+ "R0069": {
+  "model_key": "gigachat",
+  "task_id": 22,
+  "type": "C"
+ },
+ "R0070": {
+  "model_key": "foreign",
+  "task_id": 35,
+  "type": "F"
+ },
+ "R0071": {
+  "model_key": "local_qwen",
+  "task_id": 23,
+  "type": "C"
+ },
+ "R0072": {
+  "model_key": "yandexgpt",
+  "task_id": 39,
+  "type": "F"
+ },
+ "R0073": {
+  "model_key": "yandexgpt",
+  "task_id": 24,
+  "type": "C"
+ },
+ "R0074": {
+  "model_key": "yandexgpt",
+  "task_id": 25,
+  "type": "C"
+ },
+ "R0075": {
+  "model_key": "gigachat",
+  "task_id": 28,
+  "type": "D"
+ },
+ "R0076": {
+  "model_key": "local_qwen",
+  "task_id": 28,
+  "type": "D"
+ },
+ "R0077": {
+  "model_key": "local_qwen",
+  "task_id": 29,
+  "type": "D"
+ },
+ "R0078": {
+  "model_key": "local_qwen",
+  "task_id": 21,
+  "type": "C"
+ },
+ "R0079": {
+  "model_key": "foreign",
+  "task_id": 24,
+  "type": "C"
+ }
+}

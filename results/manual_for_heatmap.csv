@@ -1,0 +1,13 @@
+model,type,metric,value,n
+foreign,C,mean_score/2,1.0,5
+foreign,D,pass@1,0.6,5
+foreign,F,correct_rate,0.5,10
+gigachat,C,mean_score/2,0.9,5
+gigachat,D,pass@1,0.4,5
+gigachat,F,correct_rate,0.4,10
+local_qwen,C,mean_score/2,0.55,5
+local_qwen,D,pass@1,0.0,5
+local_qwen,F,correct_rate,0.4,10
+yandexgpt,C,mean_score/2,0.45,5
+yandexgpt,D,pass@1,0.4,5
+yandexgpt,F,correct_rate,0.7,10

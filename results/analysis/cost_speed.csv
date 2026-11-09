@@ -1,0 +1,5 @@
+model,total_tokens,mean_latency_s,n_correct,cost_rub,rub_per_correct
+foreign,573470,5.1,11.0,86.02,7.82
+gigachat,256725,4.3,10.0,,
+local_qwen,745505,23.6,5.0,,
+yandexgpt,263827,3.3,9.0,92.34,10.26

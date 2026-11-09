@@ -1,0 +1,6 @@
+model,n_unresolvable,fabricated,fabrication_rate,binom_p_gt_0.5
+foreign,7,5,0.714,0.2266
+gigachat,7,6,0.857,0.0625
+local_qwen,7,6,0.857,0.0625
+yandexgpt,7,3,0.429,0.7734
+ALL,28,20,0.714,0.0178

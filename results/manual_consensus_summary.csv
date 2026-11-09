@@ -1,0 +1,13 @@
+source,model,type,n_tasks,n_answered,n_refused,n_scored,mean_score,share_full,acc_norm,pass_at_1,method_error_rate,solved_end_to_end,correct_rate,noticed_rate,unresolvable_correct_rate
+consensus,foreign,C,5,5,0,5.0,2.0,1.0,1.0,,,,,,
+consensus,foreign,D,5,5,0,,,,,0.6,0.3,0.6,,,
+consensus,foreign,F,10,10,0,,,,,,,,0.5,0.7,0.286
+consensus,gigachat,C,5,5,0,5.0,1.8,0.8,0.9,,,,,,
+consensus,gigachat,D,5,5,0,,,,,0.4,0.2,0.4,,,
+consensus,gigachat,F,10,10,0,,,,,,,,0.4,0.9,0.143
+consensus,local_qwen,C,5,5,0,5.0,1.1,0.2,0.55,,,,,,
+consensus,local_qwen,D,5,5,0,,,,,0.0,0.5,0.0,,,
+consensus,local_qwen,F,10,10,0,,,,,,,,0.4,0.8,0.143
+consensus,yandexgpt,C,5,5,0,5.0,0.9,0.2,0.45,,,,,,
+consensus,yandexgpt,D,5,5,0,,,,,0.4,0.6,0.4,,,
+consensus,yandexgpt,F,10,10,0,,,,,,,,0.7,1.0,0.571
