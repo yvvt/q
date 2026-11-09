@@ -1,0 +1,110 @@
+======================================================================= RESTART: D:\bmstu\5semestr\ММОиИИ\lr\3.1\analysis.py =======================================================================
+ПРЕДУПРЕЖДЕНИЕ: тарифы не заполнены (TARIFFS) — стоимостные колонки NaN; для local_qwen укажите в отчёте время и память на вашем железе вместо тарифа
+ПРЕДУПРЕЖДЕНИЕ: из ECE исключено ответов с уверенностью 0: 51 (сбой формата, а не осмысленная уверенность)
+
+=== Калибровка уверенности (ECE) ===
+     model   ECE   n
+   foreign 0.173 159
+  gigachat 0.262 322
+local_qwen 0.359 239
+ yandexgpt 0.095 241
+=== Точность с 95% ДИ ===
+     model type  n   acc  ci_lo  ci_hi
+   foreign    A 10 0.800  0.500  1.000
+   foreign    B 10 1.000  1.000  1.000
+   foreign    C  5 1.000  1.000  1.000
+   foreign    D  5 0.200  0.000  0.600
+   foreign    F 10 0.500  0.200  0.800
+  gigachat    A 10 1.000  1.000  1.000
+  gigachat    B 10 1.000  1.000  1.000
+  gigachat    C  5 0.800  0.400  1.000
+  gigachat    D  5 0.400  0.000  0.800
+  gigachat    F 10 0.400  0.100  0.700
+local_qwen    A 10 0.900  0.700  1.000
+local_qwen    B 10 1.000  1.000  1.000
+local_qwen    C  5 0.200  0.000  0.600
+local_qwen    D  5 0.000  0.000  0.000
+local_qwen    F 10 0.400  0.100  0.700
+ yandexgpt    A 10 0.600  0.300  0.900
+ yandexgpt    B 10 0.400  0.100  0.700
+ yandexgpt    C  5 0.200  0.000  0.600
+ yandexgpt    D  5 0.200  0.000  0.600
+ yandexgpt    F 10 0.700  0.400  0.902
+   foreign  ALL 40 0.725  0.575  0.850
+  gigachat  ALL 40 0.750  0.624  0.875
+local_qwen  ALL 40 0.600  0.450  0.750
+ yandexgpt  ALL 40 0.475  0.325  0.625
+
+=== МакНемар (все оценённые типы) ===
+   model_a    model_b  n  discordant  p_value
+   foreign   gigachat 40           7   1.0000
+   foreign local_qwen 40           9   0.1797
+   foreign  yandexgpt 40          16   0.0213
+  gigachat local_qwen 40           8   0.0703
+  gigachat  yandexgpt 40          19   0.0192
+local_qwen  yandexgpt 40          15   0.3018
+
+=== Отказы ===
+     model type  n  n_ans  refusal_rate
+   foreign    A 10      8           0.2
+   foreign    B 10     10           0.0
+   foreign    C  5      5           0.0
+   foreign    D  5      5           0.0
+   foreign    F 10     10           0.0
+  gigachat    A 10     10           0.0
+  gigachat    B 10     10           0.0
+  gigachat    C  5      5           0.0
+  gigachat    D  5      5           0.0
+  gigachat    F 10     10           0.0
+local_qwen    A 10     10           0.0
+local_qwen    B 10     10           0.0
+local_qwen    C  5      5           0.0
+local_qwen    D  5      5           0.0
+local_qwen    F 10     10           0.0
+ yandexgpt    A 10      9           0.1
+ yandexgpt    B 10      6           0.4
+ yandexgpt    C  5      5           0.0
+ yandexgpt    D  5      5           0.0
+ yandexgpt    F 10     10           0.0
+
+=== H3 ===
+     model  n_unresolvable  fabricated  fabrication_rate  binom_p_gt_0.5
+   foreign               7           5             0.714          0.2266
+  gigachat               7           6             0.857          0.0625
+local_qwen               7           6             0.857          0.0625
+ yandexgpt               7           3             0.429          0.7734
+       ALL              28          20             0.714          0.0178
+
+=== H5 ===
+МакНемар на типе A (local vs остальные): [{'model_a': 'foreign', 'model_b': 'local_qwen', 'n': 10, 'discordant': 3, 'p_value': 1.0}, {'model_a': 'gigachat', 'model_b': 'local_qwen', 'n': 10, 'discordant': 1, 'p_value': 1.0}, {'model_a': 'local_qwen', 'model_b': 'yandexgpt', 'n': 10, 'discordant': 3, 'p_value': 0.25}]
+0.1 0.0
+
+=== H12 ===
+        who  n_shots   n   acc  f1_rare  bal_acc
+    foreign        0  99 0.162    0.108    0.476
+   gigachat        0  98 0.541    0.082    0.444
+ local_qwen        0 100 0.080    0.098    0.433
+  yandexgpt        0  37 0.838    0.250    0.608
+    foreign        5  98 0.867    0.381    0.774
+   gigachat        5 100 0.620    0.208    0.720
+ local_qwen        5  63 0.889    0.000    0.459
+     logreg        5 100 0.800    0.333    0.816
+naive_bayes        5 100 0.930    0.462    0.729
+  yandexgpt        5 100 0.740    0.071    0.472
+    foreign       20  50 0.640    0.182    0.576
+   gigachat       20 100 0.680    0.158    0.596
+ local_qwen       20  40 0.875    0.000    0.449
+     logreg       20 100 0.860    0.417    0.848
+naive_bayes       20 100 0.590    0.196    0.704
+  yandexgpt       20 100 0.860    0.222    0.613
+
+=== Стоимость/скорость ===
+            total_tokens  mean_latency_s  n_correct  cost_rub  rub_per_correct
+model                                                                         
+foreign           573470             5.1       29.0     86.02             2.97
+gigachat          256725             4.3       30.0      0.00             0.00
+local_qwen        745505            23.6       24.0       NaN              NaN
+yandexgpt         263827             3.3       19.0     92.34             4.86
+
+Кандидаты ошибок: results\analysis\error_candidates.csv (выберите 5 с цитатами вручную); графики: figures/
+Вердикты формулируйте по правилам, зафиксированным в отчёте: H3 — fabrication_rate > 0.5 в агрегате; H5 — gap_A > gap_B при значимом МакНемаре на A (иначе 'направленно, незначимо'); H12 — по основным метрикам f1_rare/bal_acc, не по accuracy.

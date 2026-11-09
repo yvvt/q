@@ -21,6 +21,81 @@ NUM_TOKEN = r"-?\d+(?:[.,]\d+)?\s*%?"
 MANUAL_TYPES = ("C", "D", "F")
 MANUAL_REVIEW_PATH = os.path.join(RESULTS_DIR, "manual_consensus_long.csv")
 
+import re
+
+_NUM = r"[+-]?\d+(?:[.,]\d+)?(?:[eE][+-]?\d+)?\s*%?"
+
+def _clean(s):
+    """Убирает хвост уверенности, markdown/LaTeX-мусор."""
+    if s is None:
+        return ""
+    s = re.split(r"УВЕРЕННОСТЬ\s*[:=]", s, flags=re.IGNORECASE)[0]
+    s = s.replace("**", "").replace("$", "").replace("\u00a0", " ")
+    return s.strip(" .;:,-–—")
+
+def _split_ref(ref):
+    """Эталоны пишутся с точкой, поэтому ', ' — разделитель компонентов, ';' — тоже."""
+    s = str(ref).strip()
+    parts = s.split(";") if ";" in s else re.split(r",\s+", s)
+    return [p.strip() for p in parts if p.strip()]
+
+def _val(tok):
+    tok = tok.strip()
+    percent = tok.endswith("%")
+    tok = tok[:-1].strip() if percent else tok
+    try:
+        return float(tok.replace(",", ".")), percent
+    except ValueError:
+        return None
+
+def _cands(vp):
+    """Лабораторная нормализация: '16%', '0.16' и '16' — одна форма."""
+    v, percent = vp
+    base = v / 100.0 if percent else v
+    return [base, v * 100.0, v / 100.0]
+
+def _tolerances(spec, n):
+    """'допуск' из банка: число -> абсолютный допуск всем компонентам;
+    строка -> покомпонентно ('ширина ±0.01; класс — точное совпадение')."""
+    if spec is None:
+        return [0.01] * n
+    if isinstance(spec, (int, float)):
+        return [float(spec)] * n
+    segs = [x.strip() for x in str(spec).split(";")]
+    out = []
+    for i in range(n):
+        seg = segs[i] if len(segs) == n else str(spec)
+        if "точн" in seg:                      # «точное совпадение»
+            out.append(0.0); continue
+        m = re.search(r"(\d+(?:[.,]\d+)?)", seg)
+        out.append(float(m.group(1).replace(",", ".")) if m else 0.01)
+    return out
+
+def check_a(parsed, reference, tol=None):
+    s = _clean(parsed)
+    if not s:
+        return False
+    refs = [_val(x) for x in _split_ref(reference)]
+    if any(r is None for r in refs):
+        return False
+    refs = [r[0] for r in refs]                # эталоны без '%'
+    n = len(refs)
+    tols = _tolerances(tol, n)
+    nums = [_val(m.group(0)) for m in re.finditer(_NUM, s)]
+    if len(nums) != n:                          # запасной путь: явные разделители
+        parts = [p for p in re.split(r";|,\s+|/\s+|\s+и\s+", s) if p.strip()]
+        if len(parts) == n:
+            alt = [_val(p) for p in parts]
+            nums = alt if all(a is not None for a in alt) else nums
+        if len(nums) != n:
+            return False
+    for got, ref, t in zip(nums, refs, tols):
+        if got is None:
+            return False
+        if not any(abs(c - ref) <= t + 1e-12 for c in _cands(got)):
+            return False
+    return True
+
 # ---------- чтение логов ----------
 def load_logs(model_key: str) -> list[dict]:
     path = os.path.join(LOGS_DIR, f"{model_key}.jsonl")
@@ -68,33 +143,6 @@ def parse_class(parsed) -> int | None:
         return int(s)
     m = re.search(r"\b([01])\b", s)  # 'класс 1' -> 1; '10' не матчится
     return int(m.group(1)) if m else None
-
-# ---------- автопроверки ----------
-def check_a(parsed, reference, tol: float = RELATIVE_TOLERANCE) -> bool:
-    """Числовой ответ с допуском. Поддерживает эталон из нескольких чисел (список или ';')."""
-    if parsed is None:
-        return False
-    exp_raw = reference if isinstance(reference, list) else [str(reference)]
-    if len(exp_raw) == 1 and ";" in exp_raw[0]:
-        exp_raw = exp_raw[0].split(";")
-    exp = [normalize_number(x) for x in exp_raw]
-    if any(x is None for x in exp):
-        return False
-    if len(exp) == 1:
-        got = [normalize_number(parsed)]
-    else:
-        got = [normalize_number(x) for x in re.findall(NUM_TOKEN, parsed)]
-    if len(got) != len(exp):
-        return False
-    for g, x in zip(got, exp):
-        if g is None:
-            return False
-        if x == 0:
-            if abs(g) > tol:
-                return False
-        elif abs(g - x) / abs(x) > tol:
-            return False
-    return True
 
 _EXACT_TRUE  = {"верно", "истина", "истинно", "да", "правда", "правильно", "true", "yes", "1"}
 _EXACT_FALSE = {"неверно", "неправильно", "ложь", "ложно", "false", "no", "0"}
