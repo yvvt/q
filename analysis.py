@@ -19,8 +19,8 @@ FIG = "figures"
 # РУБ за 1000 токенов по официальным тарифам; впишите и укажите дату прайса в отчёте
 TARIFFS = {
     "gigachat":   0.0,     # бесплатный лимит для физлиц; укажите 0 и в отчёте поясните
-    "yandexgpt":  0.35,    # yandexgpt-5-lite, уточните по ai.cloud.yandex.ru
-    "foreign":    0.15,    # gpt-oss-20b/latest через Yandex AI Studio, уточните
+    "yandexgpt":  0.2,    # yandexgpt-5-lite, уточните по ai.cloud.yandex.ru
+    "foreign":    0.1,    # gpt-oss-20b/latest через Yandex AI Studio, уточните
     "local_qwen": None,    # локально — тарифа нет; в отчёте укажите время и память
 }
 CLASSICAL_PREDS = os.path.join(RESULTS_DIR, "classical_preds.csv")  # classifier,n_shots,row_idx,y_pred

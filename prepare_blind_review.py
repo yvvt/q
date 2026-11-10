@@ -41,7 +41,7 @@ def load_first_entries() -> dict:
     """
     entries, dup = {}, 0
     for mk in MODELS:
-        path = os.path.join("logs.1", f"{mk}.jsonl")
+        path = os.path.join("logs", f"{mk}.jsonl")
         if not os.path.exists(path):
             print(f"ПРЕДУПРЕЖДЕНИЕ: лог {mk} не найден")
             continue

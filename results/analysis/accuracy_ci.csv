@@ -9,7 +9,7 @@ gigachat,B,10,1.0,1.0,1.0
 gigachat,C,5,0.8,0.4,1.0
 gigachat,D,5,0.4,0.0,0.8
 gigachat,F,10,0.4,0.1,0.7
-local_qwen,A,10,0.9,0.7,1.0
+local_qwen,A,10,1.0,1.0,1.0
 local_qwen,B,10,1.0,1.0,1.0
 local_qwen,C,5,0.2,0.0,0.6
 local_qwen,D,5,0.0,0.0,0.0
@@ -21,5 +21,5 @@ yandexgpt,D,5,0.2,0.0,0.6
 yandexgpt,F,10,0.7,0.4,0.902
 foreign,ALL,40,0.725,0.575,0.85
 gigachat,ALL,40,0.75,0.624,0.875
-local_qwen,ALL,40,0.6,0.45,0.75
+local_qwen,ALL,40,0.625,0.475,0.775
 yandexgpt,ALL,40,0.475,0.325,0.625

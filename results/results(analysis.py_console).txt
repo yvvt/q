@@ -1,12 +1,12 @@
 ======================================================================= RESTART: D:\bmstu\5semestr\ММОиИИ\lr\3.1\analysis.py =======================================================================
 ПРЕДУПРЕЖДЕНИЕ: тарифы не заполнены (TARIFFS) — стоимостные колонки NaN; для local_qwen укажите в отчёте время и память на вашем железе вместо тарифа
-ПРЕДУПРЕЖДЕНИЕ: из ECE исключено ответов с уверенностью 0: 51 (сбой формата, а не осмысленная уверенность)
+ПРЕДУПРЕЖДЕНИЕ: из ECE исключено ответов с уверенностью 0: 50 (сбой формата, а не осмысленная уверенность)
 
 === Калибровка уверенности (ECE) ===
      model   ECE   n
    foreign 0.173 159
   gigachat 0.262 322
-local_qwen 0.359 239
+local_qwen 0.357 240
  yandexgpt 0.095 241
 === Точность с 95% ДИ ===
      model type  n   acc  ci_lo  ci_hi
@@ -20,7 +20,7 @@ local_qwen 0.359 239
   gigachat    C  5 0.800  0.400  1.000
   gigachat    D  5 0.400  0.000  0.800
   gigachat    F 10 0.400  0.100  0.700
-local_qwen    A 10 0.900  0.700  1.000
+local_qwen    A 10 1.000  1.000  1.000
 local_qwen    B 10 1.000  1.000  1.000
 local_qwen    C  5 0.200  0.000  0.600
 local_qwen    D  5 0.000  0.000  0.000
@@ -32,17 +32,17 @@ local_qwen    F 10 0.400  0.100  0.700
  yandexgpt    F 10 0.700  0.400  0.902
    foreign  ALL 40 0.725  0.575  0.850
   gigachat  ALL 40 0.750  0.624  0.875
-local_qwen  ALL 40 0.600  0.450  0.750
+local_qwen  ALL 40 0.625  0.475  0.775
  yandexgpt  ALL 40 0.475  0.325  0.625
 
 === МакНемар (все оценённые типы) ===
    model_a    model_b  n  discordant  p_value
    foreign   gigachat 40           7   1.0000
-   foreign local_qwen 40           9   0.1797
+   foreign local_qwen 40           8   0.2891
    foreign  yandexgpt 40          16   0.0213
-  gigachat local_qwen 40           8   0.0703
+  gigachat local_qwen 40           7   0.1250
   gigachat  yandexgpt 40          19   0.0192
-local_qwen  yandexgpt 40          15   0.3018
+local_qwen  yandexgpt 40          16   0.2101
 
 === Отказы ===
      model type  n  n_ans  refusal_rate
@@ -76,8 +76,8 @@ local_qwen               7           6             0.857          0.0625
        ALL              28          20             0.714          0.0178
 
 === H5 ===
-МакНемар на типе A (local vs остальные): [{'model_a': 'foreign', 'model_b': 'local_qwen', 'n': 10, 'discordant': 3, 'p_value': 1.0}, {'model_a': 'gigachat', 'model_b': 'local_qwen', 'n': 10, 'discordant': 1, 'p_value': 1.0}, {'model_a': 'local_qwen', 'model_b': 'yandexgpt', 'n': 10, 'discordant': 3, 'p_value': 0.25}]
-0.1 0.0
+МакНемар на типе A (local vs остальные): [{'model_a': 'foreign', 'model_b': 'local_qwen', 'n': 10, 'discordant': 2, 'p_value': 0.5}, {'model_a': 'gigachat', 'model_b': 'local_qwen', 'n': 10, 'discordant': 0, 'p_value': 1.0}, {'model_a': 'local_qwen', 'model_b': 'yandexgpt', 'n': 10, 'discordant': 4, 'p_value': 0.125}]
+0.0 0.0
 
 === H12 ===
         who  n_shots   n   acc  f1_rare  bal_acc
@@ -101,10 +101,10 @@ naive_bayes       20 100 0.590    0.196    0.704
 === Стоимость/скорость ===
             total_tokens  mean_latency_s  n_correct  cost_rub  rub_per_correct
 model                                                                         
-foreign           573470             5.1       29.0     86.02             2.97
+foreign           573470             5.1       29.0     57.35             1.98
 gigachat          256725             4.3       30.0      0.00             0.00
-local_qwen        745505            23.6       24.0       NaN              NaN
-yandexgpt         263827             3.3       19.0     92.34             4.86
+local_qwen        746911            23.9       25.0       NaN              NaN
+yandexgpt         263827             3.3       19.0     52.77             2.78
 
 Кандидаты ошибок: results\analysis\error_candidates.csv (выберите 5 с цитатами вручную); графики: figures/
 Вердикты формулируйте по правилам, зафиксированным в отчёте: H3 — fabrication_rate > 0.5 в агрегате; H5 — gap_A > gap_B при значимом МакНемаре на A (иначе 'направленно, незначимо'); H12 — по основным метрикам f1_rare/bal_acc, не по accuracy.

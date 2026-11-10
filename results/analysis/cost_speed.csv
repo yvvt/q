@@ -1,5 +1,5 @@
 model,total_tokens,mean_latency_s,n_correct,cost_rub,rub_per_correct
-foreign,573470,5.1,29.0,86.02,2.97
+foreign,573470,5.1,29.0,57.35,1.98
 gigachat,256725,4.3,30.0,0.0,0.0
-local_qwen,745505,23.6,24.0,,
-yandexgpt,263827,3.3,19.0,92.34,4.86
+local_qwen,746911,23.9,25.0,,
+yandexgpt,263827,3.3,19.0,52.77,2.78
